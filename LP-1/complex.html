@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    button[data-key] {
+      color: maroon;
+    }
+    .users-block {
+      border: 1px solid gray;
+      background: antiquewhite;
+      margin: 5px auto;
+      padding: 5px 10px;
+      width: 75vw;
+    }
+  </style>
+</head>
+<body>
+  <h1>Комплексі типи даних: масиви, об'єкти</h1>
+  <h2>Объекты</h2>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, voluptas?
+  </p>
+  <div style="display: flex; width: 50vw; margin: auto;">
+    <div style="border: 1px solid black;">
+      <h3>Nayavni polya</h3>
+      <div id="current-fields"></div>
+    </div>
+    <div style="border: 1px solid black;">
+      <h3>Add new</h3>
+      <label><input type="name" id="add-field-name"/></label><br>
+      <label><input type="name" id="add-field-value"/></label><br>
+      <button type="button" id="add-field-button">Dodati</button>
+    </div>
+    <div class="users-block">
+      <div id="registered-users"></div>
+      <label><input placeholder="name"></label>
+      <label><input placeholder="surname"></label>
+      <button type="button">Register</button>
+    </div>
+  </div>
+  <script src="complex.js"></script>
+</body>
+</html>
