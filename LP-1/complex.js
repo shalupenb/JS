@@ -27,8 +27,8 @@ function updateRegisteredUsers() {
         <th>Surname</th>
       </tr>
       <tr>
-        <td>------</td>
-        <td>|------------</td>
+        <td>------------</td>
+        <td>------------</td>
       </tr>
     </thead>
     <tbody></tbody>
@@ -38,7 +38,7 @@ function updateRegisteredUsers() {
     let tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${user.name}</td>
-      <td>| ${user.surname}</td>
+      <td>${user.surname}</td>
     `;
     table.querySelector('tbody').appendChild(tr);
   }
