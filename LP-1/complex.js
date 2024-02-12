@@ -16,18 +16,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function updateRegisteredUsers() {
   const usersContainer = document.getElementById("registered-users");
-  if(!usersContainer) throw "Element #registered-users not found";
+  if (!usersContainer) throw "Element #registered-users not found";
   usersContainer.innerHTML = "";
-  const ul = document.createElement("ul");
-  ul.style['list-style'] = 'none';
-  for( let user of window.users){
-    let li = document.createElement("li");
-    //let txt = document.createTextNode(`Name: <strong>${user.name}</strong>, Surname: ${user.surname}`);
-    li.innerHTML = `Name: <b>${user.name}</b>, Surname: <b>${user.surname}</b>`;
-    //li.appendChild(txt);
-    ul.appendChild(li);
+
+  const table = document.createElement("table");
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Surname</th>
+      </tr>
+      <tr>
+        <td>------</td>
+        <td>|------------</td>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  `;
+
+  for (let user of window.users) {
+    let tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${user.name}</td>
+      <td>| ${user.surname}</td>
+    `;
+    table.querySelector('tbody').appendChild(tr);
   }
-  usersContainer.appendChild(ul);
+
+  usersContainer.appendChild(table);
 }
 
 function updateCurrentFields(){
