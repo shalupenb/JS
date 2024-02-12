@@ -28,7 +28,7 @@ function updateRegisteredUsers() {
       </tr>
       <tr>
         <td>------------</td>
-        <td>------------</td>
+        <td>-----------------</td>
       </tr>
     </thead>
     <tbody></tbody>
