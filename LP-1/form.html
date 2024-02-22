@@ -26,8 +26,9 @@
             </div>
             <div class="input-field col s6">
               <i class="material-icons prefix">phone</i>
-              <input id="icon_telephone" type="tel" class="validate">
+              <input id="icon_telephone" name="user-phone" type="tel" class="validate">
               <label for="icon_telephone">Телефон: </label>
+              <span class="helper-text" data-error="wrong" data-success="right">Номер телефона</span>
             </div>
           </div>
 
@@ -36,11 +37,13 @@
               <i class="material-icons prefix">lock</i>
               <input id="icon_password" name="user-password" type="password" class="validate">
               <label for="icon_password">Пароль: </label>
+              <span class="helper-text" data-error="wrong" data-success="right">Придумайте пароль</span>
             </div>
             <div class="input-field col s6">
               <i class="material-icons prefix">lock_open</i>
               <input id="icon_repeat" name="user-repeat" type="password" class="validate">
               <label for="icon_repeat">Повтор пароля: </label>
+              <span class="helper-text" data-error="wrong" data-success="right">Повторите введение пароля</span>
             </div>
           </div>
 
@@ -49,11 +52,13 @@
               <i class="material-icons prefix">mail</i>
               <input id="icon_email" name="user-email" type="email" class="validate">
               <label for="icon_email">Почта: </label>
+              <span class="helper-text" data-error="wrong" data-success="right">Почта</span>
             </div>
             <div class="input-field col s6">
               <i class="material-icons prefix">event</i>
               <input id="icon_birthdate" name="user-birthdate" type="date" class="validate">
               <label for="icon_birthdate">Дата рождения: </label>
+              <span class="helper-text" data-error="wrong" data-success="right">Дата рождения</span>
             </div>
           </div>
 
@@ -99,7 +104,7 @@
     
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="forms.js"></script>
+    <script src="form.js"></script>
 </body>
 
 </html>

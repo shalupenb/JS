@@ -1,0 +1,14 @@
+.rates-table{
+  border: 1px solid gray;
+  border-collapse: collapse;
+}
+.rates-table td, .rates-table th{
+  border: 1px solid gray;
+  padding: 3px 5px ;
+}
+.rates-table tr:nth-child(odd){
+  background-color: lightgray;
+}
+.rates-table th{
+  cursor: pointer;
+}
