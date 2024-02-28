@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Введення імені користувача</title>
+    <link rel="stylesheet" href="hw.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            width: 300px;
+        }
+        
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>1</h1>
+    <input type="text" id="username">
+    <h1>2</h1>
+    <button id="open-modal-button">Open</button>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h3>Some text in modal window</h3>
+            <button class="close-button" id="close-modal-button">Close window</button>
+        </div>
+    </div>
+
+    <h1>4</h1>
+    <div id="traffic-light" class="traffic-light">
+        <div id="red-light" class="traffic-light-light red-light"></div>
+        <div id="yellow-light" class="traffic-light-light yellow-light"></div>
+        <div id="green-light" class="traffic-light-light green-light"></div>
+    </div>
+    <br>
+    <button id="change-light-button" class="button">Change</button>
+    <script src="hw.js"></script>
+</body>
+</html>

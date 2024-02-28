@@ -12,3 +12,6 @@
 .rates-table th{
   cursor: pointer;
 }
+.active{
+  color: greenyellow;
+}

@@ -49,6 +49,32 @@ document.onsubmit = function(e){
       data.message = "Не может быть пустым";
       data.isError = true;
     }
+    else if(userPassword.length < 3){
+      data.message = "Не может быть короче 3 символов";
+      data.isError = true;
+    }
+    else{
+      let preg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).*$/;
+      if(!preg.test(userPassword)){
+        data.message = "May contain number, big letter and spec symbol";
+        data.isError = true;
+      }
+    }
+    setHelperMessage(data);
+    //#endregion
+
+    //#region Repeat
+    const userRepeatInput = e.target.querySelector('[name="user-repeat"]');
+    if(!userRepeatInput){
+      alert('В форме не найден элемент [name="user-repeat"]');
+      return;
+    }
+    const userRepeat = userRepeatInput.value;
+    data = { inputElement: userRepeatInput, message: "Пароли совпадают", isError: false};
+    if(userRepeat != userPassword){
+      data.message = "Пароли не совпадают";
+      data.isError = true;
+    }
     setHelperMessage(data);
     //#endregion
 
