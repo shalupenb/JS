@@ -16,3 +16,56 @@
   height: 20px;
   width: auto;
 }
+.dnd-container{
+  float: right;
+  border: 3px solid gray;
+  height: 90vh;
+  width: 50%;
+  position: relative;
+}
+
+.circle{
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+}
+
+.blue{
+  background-color: rgb(28, 108, 199);
+}
+.pink{
+  background-color: rgb(194, 25, 25);
+  left: 50px;
+}
+.green{
+  background-color:rgb(41, 190, 36);
+  left: 100px;
+}
+.square{
+  width: 100px;
+  height: 100px;
+  margin-top: 130px;
+  background-color: rgb(204, 141, 24);
+}
+
+[data-type="draggable"]{
+  position: absolute;
+  z-index: 1;
+}
+
+.dnd-target{
+  position: absolute;
+  bottom: 0;
+  width: 46%;
+  height: 25vh;
+}
+
+.dnd-positive{
+  left: 0;
+  background: gainsboro;
+}
+
+.dnd-negative{
+  right: 0;
+  background-color: gray;
+}

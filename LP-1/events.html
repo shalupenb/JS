@@ -7,6 +7,16 @@
   <link rel="stylesheet" href="events.css">
 </head>
 <body>
+  <div class="dnd-container">
+    <h1>Drag'n Drop</h1>
+    <div class="blue circle" data-type="draggable"></div>
+    <div class="pink circle" data-type="draggable"></div>
+    <div class="green circle" data-type="draggable"></div>
+    <div class="square" draggable="true" ondragstart="event.dataTransfer.effectAllowed='move'"></div>
+    
+    <div class="dnd-target dnd-positive" ondragover="event.dataTransfer.dropEffect='move'; event.preventDefault()"></div>
+    <div class="dnd-target dnd-negative"></div>
+</div>
   <h1>Events in JS</h1>
   <p>
     Example 1: <br>

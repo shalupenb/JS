@@ -1,0 +1,19 @@
+canvas{
+  border: 1px solid gray;
+}
+#figure {
+  border: 1px solid gray;
+}
+#rates-canvas {
+  width: 100%;
+  border: 1px solid gray;
+}
+.rate-button {
+  display: block;
+  margin: 5px 0;
+}
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
