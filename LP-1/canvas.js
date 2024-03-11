@@ -132,19 +132,35 @@ function loadHistory(assetId) {
     for(let rec of j.data) {
       let rate = Number(rec.priceUsd);
       let x = (rec.time - minTime) * window.dcW / (maxTime - minTime);
-      let y = window.dcH - 10 - (rate - minRate) * (window.dcH - 20) / (maxRate - minRate);
+      let y = window.dcH - 20 - (rate - minRate) * (window.dcH - 30) / (maxRate - minRate);
       dc.lineTo(x, y);
     }
     dc.stroke();
     a = 0.3;
     dc.fillStyle = `rgba(${r},${g},${b},${a})`;
-    dc.lineTo(window.dcW,window.dcH);
-    dc.lineTo(0,window.dcH);
+    dc.lineTo(window.dcW,window.dcH - 10);
+    dc.lineTo(0,window.dcH - 10);
     dc.fill();
     a = 1;
     dc.fillStyle = `rgba(${r},${g},${b},${a})`;
-    dc.fillText(Math.round(maxRate), window.dcW - 50, 10);
-    dc.fillText(Math.round(minRate), window.dcW - 50, window.dcH);
+    dc.fillText(Math.round(maxRate), window.dcW - 40, 10);
+    dc.fillText(Math.round(minRate), window.dcW - 40, window.dcH - 15);
+    let date = new Date(minTime);
+    let yyyy = date.getFullYear();
+    let mm = date.getMonth() + 1;
+    let dd = date.getDate();
+    if(mm < 10) mm = '0' + mm;
+    if(dd < 10) dd = '0' + dd;
+    let timeString = `${dd}.${mm}.${yyyy}`;
+    dc.fillText(timeString, 5, window.dcH - 1);
+    date = new Date(maxTime);
+    yyyy = date.getFullYear();
+    mm = date.getMonth() + 1;
+    dd = date.getDate();
+    if(mm < 10) mm = '0' + mm;
+    if(dd < 10) dd = '0' + dd;
+    timeString = `${dd}.${mm}.${yyyy}`;
+    dc.fillText(timeString, window.dcW - 55, window.dcH - 1);
   });
 }
 function loadAssets() {
@@ -159,4 +175,69 @@ function loadAssets() {
     }
     document.getElementById("assets-block").innerHTML = html;
   });
+}
+document.addEventListener("DOMContentLoaded", () => {
+  $("#update-time").val("12:00");
+  $("#local-button").click(localButtonClick);
+  $("#session-button").click(sessionButtonClick);
+  let saved = localStorage.getItem("saved");
+  if(saved){
+    $("#local-input").val(saved);
+  }
+  $("#local-delete").click( _ => {localStorage.removeItem("saved"); $("#local-input").val("");});
+  setInterval(timerTick, 1000);
+});
+function localButtonClick() {
+  localStorage.setItem(
+    "saved",
+    $("#local-input").val()
+  );
+  localStorage.setItem(
+    "moment",
+    new Date()
+  );
+}
+function sessionButtonClick() {
+  sessionStorage.setItem(
+    "saved",
+    $("#session-input").val()
+  );
+  sessionStorage.setItem(
+    "moment",
+    new Date()
+  );
+}
+function timerTick() {
+  let savedMoment = localStorage.getItem("moment");
+  if (savedMoment) {
+    let moment = new Date(savedMoment);
+    let period = (new Date().getTime() - moment.getTime()) / 1000;
+    $("#local-period").text(Math.round(period));
+    let updateTime = $("#update-time").val().split(":");
+    let updateHour = parseInt(updateTime[0]);
+    let updateMinute = parseInt(updateTime[1]);
+    let now = new Date();
+    let nowHour = now.getHours();
+    let nowMinute = now.getMinutes();
+    if (nowHour > updateHour || (nowHour === updateHour && nowMinute >= updateMinute)) {
+      localStorage.removeItem("saved");
+      localStorage.removeItem("moment");
+      localButtonClick();
+    }
+  } else {
+    $("#local-period").text("---");
+  }
+  let savedSessionMoment = sessionStorage.getItem("moment");
+  if(savedSessionMoment) {
+    let moment = new Date(savedSessionMoment);
+    let period = (new Date().getTime() - moment.getTime()) / 1000;
+    $("#session-period").text(Math.round(period));
+    if(period > 10) {
+      sessionStorage.removeItem("saved");
+      sessionStorage.removeItem("moment");
+    }
+  }
+  else {
+    $("#session-period").text("---");
+  }
 }

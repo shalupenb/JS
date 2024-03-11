@@ -43,6 +43,41 @@
       </div>
     </div>
   </div>
+  <div>
+    <div class="row">
+      <div class="col s1">
+        <label for="update-time">Час оновлення:</label>
+      </div>
+      <div class="col s4">
+        <input type="time" id="update-time" class="validate">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s1">
+        <span id="local-period"></span>
+      </div>
+      <div class="input-field col s6">
+        <input id="local-input">
+      </div>
+      <div class="col s4">
+        <button class="btn" id="local-button">Local Storage</button>
+      </div>
+      <div class="col s2">
+        <button class="btn red" id="local-delete">Delete</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s1">
+        <span id="session-period"></span>
+      </div>
+      <div class="input-field col s6">
+        <input id="session-input">
+      </div>
+      <div class="col s4">
+        <button class="btn" id="session-button">Session Storage</button>
+      </div>
+    </div>
+  </div>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="canvas.js"></script>

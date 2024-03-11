@@ -1,0 +1,15 @@
+.quest-table input[type="radio"] {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+.quest-table input[type="radio"]+label {
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: block;
+  padding: 3px 5px;
+}
+.quest-table input[type="radio"]:checked+label {
+  border: 1px solid maroon;
+}
