@@ -1,0 +1,27 @@
+rates table, rates table td {
+  border: 1px solid grey;
+  border-collapse: collapse;
+}
+rates table td {
+  padding: 3px 5px;
+}
+rates table tr:nth-child(odd) {
+  background-color: lightgrey;
+}
+rates table .number {
+  text-align: center;
+}
+.rate-usd {
+  background-color: rgb(32, 201, 32)!important;
+}
+.rate-eur {
+  background-color: rgb(31, 95, 192)!important;
+}
+rate div {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+rate img {
+  max-width: 15px;
+}

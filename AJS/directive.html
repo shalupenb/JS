@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mainApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular Directives</title>
+  <link rel="stylesheet" href="directive.css">
+</head>
+<body>
+  <h1>Директивы в AngularJS</h1>
+  <p>
+    Директивы это продолжение идеи контроллеров
+  </p>
+  <ul>
+    <li>
+      <li>Атрибут свободного тега (<code>&lt;div directive1>&lt;/div></code>)</li>
+    </li>
+    <li>Класс (<code>&lt;div class="directive2">&lt;/div></code>)</li>
+  </ul>
+  <div directive1></div>
+  <div class="directive2"></div>
+  <directive3></directive3>
+  <directive3></directive3>
+  <div directive4></div>
+  <h2>Передача данных с DOM</h2>
+  <calc initial = "10" step = "1"></calc>
+  <calc initial = "20" step = "2"></calc>
+  <script src="angular.min.js"></script>
+  <script src="directive.js"></script>
+</body>
+</html>

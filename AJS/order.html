@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" ng-app class="ng-scope">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="order.css">
+</head>
+<body>
+  <h1>Brief</h1>
+  <div class="container">
+    <div class="left-block">
+      Brief name: <input ng-model="orderTitle"><br>
+      Website type: <select ng-model="orderType">
+        <option>Website Card</option>
+        <option>Landing Page</option>
+        <option>Shop</option>
+        <option>Forum</option>
+        <option>Blog</option>
+      </select>
+      <br><label><input type="checkbox" ng-model="needMap">
+      Map needed</label>
+      <br>Hosting:
+      <label><input type="radio" name="host" ng-model="needHost" value="AWS">AWS</label>
+      <label><input type="radio" name="host" ng-model="needHost" value="Azure">Azure</label>
+      <br>Color: <input type="color" ng-model="siteColor">
+    </div>
+    <div class="right-block">
+      <h2>{{orderTitle}}</h2>
+      <p>Development site of type: <b>'{{orderType}}'</b></p>
+      <p>Map needed: <b>{{needMap ? 'yes' : 'no'}}</b></p>
+      <p>Hosting: <b>{{needHost}}</b></p>
+      <p style="display: flex;">Color: <b>{{siteColor}}</b><span style="margin-left: 15px;background-color:{{siteColor}}; width:50px; height:20px"></span></p>
+    </div>
+  </div>
+  <script src="angular.min.js"></script>
+</body>
+</html>
