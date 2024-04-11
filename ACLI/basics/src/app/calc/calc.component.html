@@ -1,0 +1,11 @@
+<div class="calculator">
+    <button (click) = "decrementClick()">--</button>
+    <b [style.font-size] = "2 * num + 'px'">{{num}}</b>
+    <button (click) = "incrementClick()">++</button>
+  </div>
+  @if(num <= 5){
+    <b>Це мінімально можливе значення</b>
+  }
+  @else if(num >= 15){
+    <b>Це максимальне можливе значення</b>
+  }

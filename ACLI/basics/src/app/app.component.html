@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="">{{title}}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="router.url=='/calc'" routerLink="calc"><i class="bi bi-calculator"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="router.url=='/traffic'" routerLink="traffic"><i class="bi bi-stoplights"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="router.url=='/rates'" routerLink="rates"><i class="bi bi-cash-coin"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="router.url=='/moon'" routerLink="moon"><i class="bi bi-moon"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="router.url=='/forms'" routerLink="forms"><i class="bi bi-card-checklist"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <router-outlet />
+</div>
+
+<div class="strut"></div>
+
+<footer class="footer">
+  &copy; 2024
+</footer>

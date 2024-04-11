@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSX</title>
+</head>
+<body>
+  <h1>JSX - розширений синтаксис JS</h1>
+  <p>JSX дозволяє "змішувати" синтаксис JS та HTML, утворюючи вирази для створення представлень. JSX - не самостійна мова, вона транслюється у JS із заміною тегів на createElement. Це процедура одноразова, тому транслятор є частиною проєкту CLI. Але на етапі проєктування зручно використовувати in-browser версію, яка "на льоту" виконує ці перетворення. З цією метою слід завантажити ще один скрипт
+  </p>
+  <p>
+    На сайті React рекомендується https://unpkg.com/babel-standalone@6/babel.min.js зберігаємо та пробуємо використати. (підключення скрипта має бути після react та react-dom)<br>Випробування цього скрипту засвідчило відсутність підтримки фрагмент-тегу. На сайті Babel посилання 
+  </p>
+  <component1></component1>
+  <component2></component2>
+  <component3></component3>
+
+  <script src="lib/react.development.js"></script>
+  <script src="lib/react-dom.development.js"></script>
+  <script src="lib/babel.7.24.min.js"></script>
+  <!-- скрипти з JSX обов'язково мають бути з атрибутом type="text/babel" 
+    !! якщо працювати з файл-протоколом (не localhost), то скрипти не можна буде підключати з іншого файлу, тільки розміщувати в основному -->
+  <script type="text/babel">
+    class Component1 extends React.Component {
+      render() {                  // JSX - елементи розмітки як частина JS
+        return <b>Hello, JSX!</b> // Транслятор (babel) перекладе цю інструкцію
+      }                           // як React.createElement('b', {}, 'Hello, JSX!')
+    }
+    ReactDOM
+    .createRoot(document.querySelector('component1'))
+    .render(<Component1/>) // знов JSX але вже для компонента
+  </script>
+  <script type="text/babel">
+    class Component2 extends React.Component {
+      render() {     
+        // render може повертати лише один елемент, але з довільною кількістю
+        // вкладених (дочірніх) елементів. Всі вони стають тілом (контентом)
+        // DOM-елемента, у який вони вбудовуються. З метою усунення додаткової
+        // вкладеності у JSX існує елемень-фрагмент <></>. Його наявність
+        // може бути не в усіх версіях babel, необхідно проводити перевірку 
+        return <>
+          <div>Hello</div>
+          <div>JSX</div>
+        </>;          
+      }                          
+    }
+    ReactDOM
+    .createRoot(document.querySelector('component2'))
+    .render(<Component2/>)
+  </script>
+  <script type="text/babel">
+    class Component3 extends React.Component {
+      constructor(props) { // props (~$attrs) - атрибути, зазначені у тегу
+        super(props);      // обов'язково - виклик батьківського конструктора
+        this.state = {     // state (~$scope) - об'єкт, що спостерігається
+          exc: "!".repeat(props.exclamations)
+        };
+        this.excClick = this.excClick.bind(this);
+      }
+      excClick() {
+        //this.state.exc += "!";  // зміна значень стану автоматично не відображається
+        this.setState({exc: this.state.exc + "!"});        // Перемальовка - виклик setState з передачею змінених параметрів
+        console.log('Click detected ' + this.state.exc);
+      }
+      render() {
+        // підстановка коду до JSX здійснюється у {}
+        // onClick - звурнути увагу на велику "C", а також відсутність () виклику
+        return <>
+          <b onClick={this.excClick}>Click Me {this.state.exc}</b>
+        </>;          
+      }                          
+    }
+    ReactDOM
+    .createRoot(document.querySelector('component3'))
+    .render(<Component3 exclamations="3"/>)
+    /*          Observer
+        Subject           Subscriber
+          [actions] <------------- action(event)
+          event:
+          for(actions) {          | !! згідно з патерном "Спостерігач"
+            action(event)         | методи підписників виконує не сам підписник,
+          }                       | а джерело події, до якого методи підписуються
+    */
+  </script>
+</body>
+</html>

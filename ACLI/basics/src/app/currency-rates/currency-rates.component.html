@@ -1,0 +1,56 @@
+<!-- <h1>Курсы валют на {{rates[0].exchangedate}} за данными НБУ</h1> -->
+<h1>Курсы валют за данными НБУ</h1> 
+<div class="popular-currancies">
+    @for (item of rates; track item.cc) {
+    @if (item.cc == "USD"){
+    <div>
+        <p>Валюта: {{item.txt}} <b>{{item.cc}}</b></p>
+        <p>Цена: {{item. rate}} &#8372;</p>
+    </div>
+    }
+    @if (item.cc == "EUR"){ 
+        <div>
+            <p>Валюта: {{item.txt}} <b>{{item.cc}}</b></p>
+            <p>Цена: {{item. rate}} &#8372;</p>
+        </div>
+    }
+    @if (item.cc == "LBP"){
+        <div>
+            <p>Валюта: {{item.txt}} <b>{{item.cc}}</b></p>
+            <p>Цена: {{item. rate}} &#8372;</p>
+        </div>
+    }
+    @if (item.cc == "PLN"){
+        <div>
+            <p>Валюта: {{item.txt}} <b>{{item.cc}}</b></p>
+            <p>Цена: {{item. rate}} &#8372;</p>
+        </div>
+    }
+}
+</div>
+@if(rates.length > 0){
+    <input [formControl]="searchControl" (nhChanged) = "searchClick()"/>
+    <button (click)="searchClick()">Q</button>
+}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Код</th>
+            <th scope="col">Валюта</th>
+            <th scope="col">Цена</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(rate of shownRates; track rate.cc) {
+        <tr>
+            <th scope="row">{{rate.cc}}</th>
+            <td>{{rate.txt}}</td>
+            <td>{{rate.rate}} &#8372;</td>
+        </tr>
+        }
+    </tbody>
+</table> 
+<h1>{{title}}</h1>
+@for(hash of hashes; track hash){
+    <p>{{hash.input}} -- {{hash.digest}}</p>
+}

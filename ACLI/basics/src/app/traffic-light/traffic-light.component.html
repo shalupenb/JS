@@ -1,0 +1,14 @@
+<div class="traffic">
+    <div class="lamp" [class.red]="state==0 || state==1"></div>
+    <span class="material-symbols-outlined arrow-right-red" [class.hide]="state==1"><mat-icon
+            class="mat-icon-size">arrow_right_alt</mat-icon></span>
+    <div class="lamp" [class.yellow]="state==1 || state==3"></div>
+    <div class="lamp" [class.green]="state==2"></div>
+    <span class="material-symbols-outlined arrow-right-green"
+        [class.hide]="state==1 || state==0"><mat-icon  class="mat-icon-size">arrow_right_alt</mat-icon></span>
+    <button (click)="nextState()">Переключить</button>
+    <button (click)="redColor()" [class.red_but]="state == 0">Красный</button>
+    <button (click)="redYellowColor()" [class.red_yel_but]="state == 1">Красный+Желтый</button>
+    <button (click)="greenColor()" [class.green_but]="state == 2">Зеленый</button>
+    <button (click)="yellowCollor()" [class.yel_but]="state == 3">Желтый</button>
+</div>

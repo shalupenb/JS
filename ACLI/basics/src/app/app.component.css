@@ -1,0 +1,33 @@
+footer{
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-light-rgb),var(--bs-bg-opacity))!important;
+    padding: 10px 20px;
+}
+
+.calculator {
+    border: 1px solid gray;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+}
+
+.calculator button {
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(purple, lightgreen);
+    color: aliceblue;
+    font-size: large;
+    font-weight: 700;
+    font-family: monospace;
+    padding: 7px 10px;
+}
+
+.calculator b {
+    font-weight: 700;
+    font-family: monospace;
+    min-width: 2em;
+    display: block;
+    text-align: center;
+}

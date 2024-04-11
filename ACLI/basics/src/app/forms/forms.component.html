@@ -1,0 +1,41 @@
+<h1>Реактивні форми Angular</h1>
+<p>
+    Форми (HTML-форми) - форми зворотнього зв'язку -
+    засіб браузера для надсилання даних від клієнта до
+    сервера. При програмуванні форм слід мати на увазі
+    a) що саме надсилається, б) питання валідації,
+    в) втручання у процес надсилання, зокрема, його зупинка.
+</p>
+<p>
+    Реактивний підхід - створення "контролерів" для елементів
+    форми. Якщо за класичного підходу в коді ми знаходимо
+    DOM-елементи форми, вилучаємо з них значення та обробляємо їх,
+    то в реактивному стилі прямого доступу до елементів немає,
+    тільки через їх контролери.
+</p>
+
+<form [formGroup]="authFormGroup" (ngSubmit)="onAuthFormSubmit()">
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="user-name"><i class="bi bi-person-vcard"></i></span>
+                <input type="text" class="form-control" placeholder="Username" formControlName="userName"
+                    name="user-name" [class.is-invalid]="userNameInvalid" aria-label="Username"
+                    aria-describedby="user-name">
+                <div class="invalid-feedback">Поле с именем не дожен быть пустым</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="user-email"><i class="bi bi-envelope-at"></i></span>
+                <input type="text" class="form-control" placeholder="Email" formControlName="userEmail"
+                    name="user-email" [class.is-invalid]="userEmailInvalid" aria-label="Email"
+                    aria-describedby="user-email">
+                <div class="invalid-feedback">Неверный E-mail</div>
+            </div>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-secondary" [disabled]="!authFormGroup.valid">Реєстрація</button>
+        </div>
+    </div>
+</form>

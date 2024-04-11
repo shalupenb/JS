@@ -1,0 +1,9 @@
+.popular-currancies{
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    background-color: rgb(243, 243, 243);
+    margin: 20px;
+    border: 1px solid black;
+    padding: 20px 20px 10px 20px;
+}

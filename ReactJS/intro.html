@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React</title>
+</head>
+<body>
+  <h1>Вступ до ReactJS</h1>
+  <h2>Встановлення React JS</h2>
+  <p>
+    Для початку роботи з React необхідно підключити два скрипти.
+    З метою покращення автономності роботи ці скрипти можна зберігти локально.
+  </p>
+  <ul>
+    <li>https://unpkg.com/react@18/umd/react.development.js -
+        набір засобів для опису компонентів
+    </li>
+    <li>https://unpkg.com/react-dom@18/umd/react-dom.development.js -
+        для їх впровадження у DOM
+    </li>
+</ul>
+  <p>
+    Місце підключення скриптів не грає ролі, але грає роль порядок їх підключення: спочатку react, потім react-dom. Частина скриптів "development" свідчить про те, що це версії для єтапу розроблення. Такі скрипти більші за розміром і містять покращену систему повідомлення про помилки. Коли проєкт здається, то ці скрипти слід замінити на react.production.min.js / react-dom.product.min.js
+  </p>
+  <div id="component-1"></div>
+  <div id="component-2"></div>
+  <div id="component-3"></div>
+  <script src="lib/react.development.js"></script>
+  <script src="lib/react-dom.development.js"></script>
+  <!-- власні скріпти розмущуємо після React -->
+  <script>
+    class Component1 extends React.Component {    // Ідея - компонента, окіл забезпечується тим, що
+      render() {                                  // компонент є классом. Замість template вживається
+        return React.createElement(               // метод render(), який є необхідним і задає відображення компонента.
+          'b',                                    // Його основа - React.CreateElement, що має 3 аргументи:
+          {style: {color: 'fuchsia'}},                                     // 'b' - назва тега або класу-компонента
+          "Hello, World"                          // {} - props (~attrs) - атрибути для тега
+        );                                        // "Hello, World!" - дочірній елемент
+      }                                           // Впровадження компонента у DOM
+    }                                             // 
+    ReactDOM
+    .createRoot( document.getElementById("component-1") )
+    .render( React.createElement(Component1, {}, null)  );
+  </script>
+
+  <script>
+    class Component2 extends React.Component {
+      render() {
+        return React.createElement(
+          'ul',
+          {},
+          React.createElement('li', {}, "Item 1"),  // дочірніх елементів
+          React.createElement('li', {}, "Item 2"),  // може бути довільна кількість
+          React.createElement('li', {}, "Item 3"),  // їх можна зазначати через
+          React.createElement('ul', {},             // кому ...
+            [
+              React.createElement('li', {}, "Item 1"),  // ... або масивом
+              React.createElement('li', {}, "Item 2"),  // також довільною
+              React.createElement('li', {}, "Item 3")   // може бути вкладеність
+            ])
+        );
+      }
+    }
+    ReactDOM
+    .createRoot( document.getElementById("component-2") )
+    .render( React.createElement(Component2, {}, null)  );
+  </script>
+
+<script>
+  // У силу поширеності вживання виразу React.create Element для нього створюють псевдонім
+  const e = React.createElement; // це скорочене посилання на ту ж функцію React.createElement
+  let arr = ["Data 1", "Data 2", "Data 3", "Data 4", "Data 5"];
+  class Component3 extends React.Component {
+    render() {
+      return e(
+        "table",
+        {},
+        e("thead", {}, e("tr", {}, e("th", {style: {padding: '3px 5px'}}, "№"), e("th", {style: {padding: '3px 5px'}}, "Название"))),
+        e(
+          "tbody",
+          {},
+          arr.map((data, i) => (
+            e(
+              "tr",
+              { key: i },
+              e("td", {style: {padding: '3px 5px'}}, i + 1),
+              e("td", {style: {padding: '3px 5px'}}, data)
+            )
+          ))
+        )
+      );
+    }
+  }
+  ReactDOM
+  .createRoot( document.getElementById("component-3") )
+  .render( e(Component3, {}, null)  );
+</script>
+</body>
+</html>
