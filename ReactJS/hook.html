@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="hook.css">
+</head>
+<body>
+  <container>  </container>
+
+
+
+
+
+  <script src="lib/react.development.js"></script>
+  <script src="lib/react-dom.development.js"></script>
+  <script src="lib/babel.7.24.min.js"></script>
+
+  <script type="text/babel">
+    function Container(){
+      // var x = 10;
+      // let [exc, setExc] = React.useState("!");
+      // let [count, setCount] = React.useState(1);
+      // let [increment, setIncrement] = React.useState(true);
+      
+      // const addExc = () => {
+      //   if (count < 3 && increment) {
+      //     setExc(exc + "!");
+      //     setCount(count + 1);
+      //   } else {
+      //     setExc(exc.slice(0, -1)); // Убираем один знак восклицания с конца строки
+      //     setCount(count - 1);
+      //     setIncrement(false);
+      //   }
+        
+      //   if (count === 1) {
+      //     setIncrement(true);
+      //   }
+      //   x++;
+      //   console.log(exc, x);
+      // }
+      
+      // React.useEffect(() => {
+      //   console.log(exc);
+      // }, [exc]);
+      
+      // return <b onClick={addExc}>Func comp with x = {x} {exc}</b>;
+      let[isLcVisible, setLcVisible] = React.useState(true);
+      let[lcCount, setLcCount] = React.useState(1);
+      const toggleVisibility = () => {
+        if(!isLcVisible){
+          setLcCount(lcCount + 1);
+        }
+        setLcVisible(!isLcVisible);
+      }
+      return <>
+        <HooksBasics /><br/>
+        <button onClick={toggleVisibility}>Toggle LifeCycle</button>
+        {isLcVisible && <LifeCycle counter={lcCount} />}
+        <RouterWidget />
+      </>;
+    }
+
+    function HooksBasics() {
+      var x = 10;
+      let [exc, setExc] = React.useState("!");
+      let [isGrow, setGrow] = React.useState(false);
+      
+      const addExc = () => {
+        setExc(isGrow
+          ? exc + ":"
+          : exc.substring(1));
+      }
+      
+      React.useEffect(() => {
+        console.log(exc);
+        if(exc.length == 1 || exc.length == 3){
+          setGrow(!isGrow);
+        }
+      }, [exc]);
+      
+      return <b onClick={addExc}>Func Component with x = {x} {exc}</b>;
+    }
+
+    function LifeCycle(props) {
+      React.useEffect(() => {
+        console.log("Component Mounted");
+        return () => {
+          console.log("Component UnMounted");
+        }
+      }, []);
+      return <h2>LifeCycle Works (Mounted {props.counter} times)</h2> ;
+    }
+    
+    function RouterWidget(props) {
+      let [hash, setHash] = React.useState(window.location.hash);
+      const onHashChanged = () => {
+        console.log(window.location.hash);
+        setHash(window.location.hash);
+      };
+      React.useEffect(
+        () => {
+          window.addEventListener('hashchange', onHashChanged)
+          return () => {
+            window.removeEventListener('hashchange', onHashChanged)
+          }
+        }, []
+      );
+      const routes = {
+        '#/home' : <b>Це домашня сторінка</b>,
+        '#/shop' : <i>Це магазин сторінка</i>,
+        '#/cart' : <u>Це кошик сторінка</u>,
+        '#/rates' : <NbuRates />
+      }
+      return <div>
+          <h2>Router Widget</h2>
+          <a href="#/home">Домашня</a> &emsp;
+          <a href="#/shop">Магазин</a> &emsp;
+          <a href="#/cart">Кошик</a> &emsp;
+          <a href="#/rates">Курси НБУ</a> &emsp;
+          <a href="#/">404</a> &emsp; <br/>
+          {routes[hash] ?? <b>404</b>}
+        </div>;
+    }
+    function NbuRates(props) {
+      const url = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=20200302&json";
+      let [rates, setRates] = React.useState([]);
+      React.useEffect(()=>{
+        fetch(url)
+        .then(r=>r.json())
+        .then(j=>setRates(j));
+      },[]);
+      return <>
+        <h3>Курси валют НБУ</h3>
+        <table className="ratestable">
+          <thead>
+            <tr>
+              <th>Код валюти</th>
+              <th>Назва валюти</th>
+              <th>Ціна</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rates.map((rate) => (
+              <tr key={rate.cc}>
+                <td>{rate.cc}</td>
+                <td>{rate.txt}</td>
+                <td>{rate.rate}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>;
+    }
+    ReactDOM
+      .createRoot(document.querySelector('container'))
+      .render(<Container />);
+</script>
+</body>
+</html>

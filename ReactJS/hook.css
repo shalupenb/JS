@@ -1,0 +1,10 @@
+.ratestable, .ratestable td {
+  border: 1px solid grey;
+  border-collapse: collapse;
+}
+.ratestable td {
+  padding: 3px 5px;
+}
+.ratestable tr:nth-child(odd) {
+  background-color: lightgrey;
+}
