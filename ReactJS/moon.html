@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moon</title>
+</head>
+<body>
+  <container></container>
+  <script src="lib/react.development.js"></script>
+  <script src="lib/react-dom.development.js"></script>
+  <script src="lib/babel.7.24.min.js"></script>
+  <script type="text/babel">
+    function MoonWidget(props) {
+      const url = "https://www.icalendar37.net/lunar/api/?year=2024&month=4&shadeColor=gray&size=150&texturize=true&day=10"
+      let [html, setHtml] = React.useState({__html: "<b>Hello</b>"});
+      let [svg, setSvg] = React.useState({__html: ""});
+      let [date, setDate] = React.useState(new Date());
+      let [phases, setPhases] = React.useState({});
+      const dateRef = React.useRef(new Date('1900-01-01'));
+      React.useEffect(()=>{
+        if(date.getYear() == dateRef.current.getYear() &&
+        date.getMonth() == dateRef.current.getMonth()) {
+          setSvg({ __html: phases[date.getDate()].svg});
+        }
+        else {
+          setSvg({ __html: "<img src='img/Loading_icon.gif' />"})
+          setTimeout(() => {
+            fetch(url).then(r => r.json()).then(j=>{
+              setSvg({ __html: j.phase[date.getDate()].svg});
+              setPhases(j.phase);
+            });
+          }, 2000);
+        }
+        dateRef.current = date;
+      }, [date]);
+      const tagChange = e => setHtml({__html: `<${e.target.value}>Hello</${e.target.value}>`});
+      const dateChange = e => setDate(new Date(e.target.value));
+      return <>
+        <h1>Робота з HTML: динамічне формування та завантаження</h1>
+        <div dangerouslySetInnerHTML={html}></div>
+        <select onChange={tagChange}>
+          <option value="b">&lt;b&gt;</option>
+          <option value="u">&lt;u&gt;</option>
+          <option value="i">&lt;i&gt;</option>
+          <option value="s">&lt;s&gt;</option>
+        </select>
+        <h2>Фази місяця</h2>
+        <span>Виберіть дату: </span><input type="date" defaultValue={date.toISOString().substring(0, 10)} onChange={dateChange}/>
+        <div dangerouslySetInnerHTML={svg}></div>
+        {phases[date.getDate()] && <div>{phases[date.getDate()].phaseName}</div>}
+        {phases[date.getDate()] && <div>{phases[date.getDate()].lighting}</div>}
+      </>
+    }
+  ReactDOM
+  .createRoot(document.querySelector('container'))
+  .render(<MoonWidget/>)
+  </script>
+</body>
+</html>
