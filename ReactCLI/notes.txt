@@ -1,0 +1,11 @@
+Project creating. Select an empty folder without non-URL symbols
+  type "npx create-react-app projectname
+  go to project name directory (cd projectname)
+  compile "npm start"
+
+router configuration
+  !npm i -D react-router-dom (DOM router)
+creating components
+  Admin.js
+  Home.js
+  Category.js
