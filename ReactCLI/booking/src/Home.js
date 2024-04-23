@@ -7,7 +7,7 @@ function Home() {
   let [ctg, setCtg] = useState([]);
   
   useEffect(()=>{
-    if(ctg.length == 0){
+    if(ctg.length === 0){
       fetch(apiPath)
       .then(r=>r.json())
       .then(j=>setCtg(j));
@@ -27,7 +27,7 @@ function CategoryCard(props) {
   return (<div class="col">
   <div class="card  h-100">
       <Link to={"category/" + props.category.slug}>
-          <img src={photoPath + props.category.photoUrl} class="card-img-top" alt="image" />
+          <img src={photoPath + props.category.photoUrl} class="card-img-top" alt="category" />
           <div class="card-body">
               <h5 class="card-title">{props.category.name}</h5>
               <p class="card-text">{props.category.description}</p>
