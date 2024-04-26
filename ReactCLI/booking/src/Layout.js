@@ -1,7 +1,8 @@
 import { Outlet, Link } from "react-router-dom";
 import { UserContext } from "./App";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 const url = "https://localhost:7022";
+const photoPath = url + "/img/avatars/";
 
 const Layout = () => {
   const {user, setUser} = useContext(UserContext);
@@ -9,7 +10,7 @@ const Layout = () => {
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid"><Link className="navbar-brand" to="/">REACT</Link>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div className="navbar-nav">
               <Link className="nav-link" to="/">Home</Link>
@@ -17,11 +18,13 @@ const Layout = () => {
               <Link className="nav-link" to="/category">Category</Link>
             </div>
           </div>
-          {!!user && <b>Avatar</b>}
-          {!!user || <b>Sign In</b>}
+          {!!user && <>
+          <img className="user_logo" src={photoPath + (user.avatarUrl ?? "no-avatar.png")} alt="avatar" />
+          <button type="button" className="btn btn-outline-secondary" onClick={()=>setUser(null)}><i className="bi bi-box-arrow-right"></i></button>
+          </>}
+          {!!user || <button type="button" className="btn btn-outline-secondary" data-bs-toggle="modal"
+            data-bs-target="#authModal"><i className="bi bi-person-check-fill"></i></button>}
         </div>
-        <button type="button" className="btn btn-outline-secondary" data-bs-toggle="modal"
-        data-bs-target="#authModal"><i className="bi bi-person-check-fill"></i></button>
       </nav>
       <div className="sub-header">
         <h2>Ваш найкращий вибір</h2>
@@ -50,6 +53,7 @@ function AuthModal() {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [errorMessage, setErrorMessage] = useState("");
+  const closeButtonRef = useRef();
 
   const onEmailChange = e => setEmail(e.target.value);
   const onPasswordChange = e => setPassword(e.target.value);
@@ -63,7 +67,6 @@ function AuthModal() {
       setErrorMessage("Заповніть 'пароль'");
       return;
     }
-    setErrorMessage("");
     fetch(`${url}/api/auth?e-mail=${email}&password=${password}`)
     .then(r => {
         if (r.status != 200) {
@@ -71,7 +74,9 @@ function AuthModal() {
         }
         else {
           setErrorMessage("");
-          setUser({name: "User"});
+          closeButtonRef.current.click();
+          r.json().then(setUser);
+          //setUser({name: "User"});
         }
     });
   };
@@ -80,7 +85,7 @@ function AuthModal() {
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title" id="authModalLabel">Автентифікація (вхід до сайту)</h5>
-          <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" ref={closeButtonRef}></button>
         </div>
         <div className="modal-body">
           <div className="col">
