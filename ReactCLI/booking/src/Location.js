@@ -1,12 +1,13 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { UserContext } from './App';
 
 const url = "https://localhost:7022"
 const apiPath = url + "/api/room/all/";
-const locIdPath = url + "/";
+const locIdPath = url + "/api/location";
 const photoPath = url + "/img/content/";
+const formPath = url + "/api/room";
 
 export default function Location() {
   const { slug } = useParams();
@@ -14,18 +15,22 @@ export default function Location() {
   let [rooms, setRooms] = useState([]);
   let [locId, setLocId] = useState("");
   useEffect(() => {
-    const _url = apiPath + slug;
-    console.log(_url);
-    fetch(_url).then(r => r.json()).then(setRooms);
-    fetch(locIdPath).then(r => r.json()).then(console.log);
+    loadRooms();
+    fetch(`${locIdPath}?slug=${slug}`, {method: 'PATCH'}).then(r => r.json()).then(j => setLocId(j.id));
   }, [slug]);
 
+  const loadRooms = useCallback(() => {
+    const _url = apiPath + slug;
+    //console.log(_url);
+    fetch(_url).then(r => r.json()).then(setRooms);
+  });
+
   return <>
-    <h1>Location : {slug}</h1>
+    <h1>Location: {slug}</h1>
     <div className="row row-cols-1 row-cols-md-2 g-4">
         {rooms.map(r => <RoomCard room={r} key={r.id} />)}
     </div>
-    { user != null && user.role == "Admin" && <AdminLocation locationId={10} /> }
+    { user != null && user.role == "Admin" && <AdminLocation locationId={locId} loadRooms={loadRooms} /> }
   </>;
 }
 
@@ -44,11 +49,28 @@ function RoomCard(props) {
 }
 
 function AdminLocation(props) {
-
+  const formSubmit = useCallback(e => {
+    const form = e.target;
+    e.preventDefault();
+    let formData = new FormData(form);
+    // console.log(formData);
+    fetch(formPath, {
+        method: 'POST',
+        body: formData
+    }).then(r => {
+        console.log(r);
+        if (r.status == 201) {
+            props.loadRooms();
+        }
+        else {
+            r.text().then(alert);
+        }
+    });
+  });
   return <>
     <hr/>
     <h3>Додавання кімнати</h3>
-    <form id="room-form" method="post" enctype="multipart/form-data">
+    <form id="room-form" method="post" encType="multipart/form-data" onSubmit={formSubmit}>
       <div className="row">
         <div className="col">
           <div className="input-group mb-3">
@@ -90,7 +112,7 @@ function AdminLocation(props) {
         <div className="row">
           <div className="col">
             <div className="input-group mb-3">
-              <label className="input-group-text" for="room-photo"><i className="bi bi-person-circle"></i></label>
+              <label className="input-group-text" htmlFor="room-photo"><i className="bi bi-person-circle"></i></label>
               <input type="file" className="form-control" name="room-photo" id="room-photo" />
             </div>
           </div> 
