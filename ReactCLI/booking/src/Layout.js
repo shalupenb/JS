@@ -1,11 +1,16 @@
 import { Outlet, Link } from "react-router-dom";
 import { UserContext } from "./App";
-import { useContext, useRef, useState } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
 const url = "https://localhost:7022";
 const photoPath = url + "/img/avatars/";
 
 const Layout = () => {
   const {user, setUser} = useContext(UserContext);
+  const logOut = useCallback(() => {
+    setUser(null);
+    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('user');
+  });
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -20,7 +25,7 @@ const Layout = () => {
           </div>
           {!!user && <>
           <img className="user_logo" src={photoPath + (user.avatarUrl ?? "no-avatar.png")} alt="avatar" />
-          <button type="button" className="btn btn-outline-secondary" onClick={()=>setUser(null)}><i className="bi bi-box-arrow-right"></i></button>
+          <button type="button" className="btn btn-outline-secondary" onClick={logOut}><i className="bi bi-box-arrow-right"></i></button>
           </>}
           {!!user || <button type="button" className="btn btn-outline-secondary" data-bs-toggle="modal"
             data-bs-target="#authModal"><i className="bi bi-person-check-fill"></i></button>}
@@ -48,7 +53,7 @@ const Layout = () => {
 };
 
 function AuthModal() {
-  const {user, setUser} = useContext(UserContext);
+  const {setUser, setToken} = useContext(UserContext);
 
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
@@ -67,7 +72,7 @@ function AuthModal() {
       setErrorMessage("Заповніть 'пароль'");
       return;
     }
-    fetch(`${url}/api/auth?e-mail=${email}&password=${password}`)
+    fetch(`${url}/api/auth/token?email=${email}&password=${password}`)
     .then(r => {
         if (r.status != 200) {
           setErrorMessage("Вхід скасовано, перевірте введені дані");
@@ -75,8 +80,17 @@ function AuthModal() {
         else {
           setErrorMessage("");
           closeButtonRef.current.click();
-          r.json().then(setUser);
-          //setUser({name: "User"});
+          r.json().then(j => {
+            if(j.user) {
+              setUser(j.user);
+              window.localStorage.setItem('user', JSON.stringify(j.user));
+              delete j.user;
+            }
+            setToken(j);
+            if(j) {
+              window.localStorage.setItem('token', JSON.stringify(j));
+            }
+          });
         }
     });
   };
