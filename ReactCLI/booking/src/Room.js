@@ -79,11 +79,11 @@ export default function Room() {
     <div className="col col-8">
       <h1>Апартамент: {state.room.name}</h1>
       {state.room.photoUrl &&
-      <img src={photoPath + state.room.photoUrl} class="room-image" alt="room" />}
+      <img src={photoPath + state.room.photoUrl} className="room-image" alt="room" />}
       <p>{state.room.description}</p>
     </div>
     <div className="col col-4">
-      <div class="calendar">
+      <div className="calendar">
       {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(d => 
         <div className='calendar-item' key={d}>{d}</div>
       )}
