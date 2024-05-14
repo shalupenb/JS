@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from 'react';
+import {useState, useEffect, useCallback, useReducer} from 'react';
 import {Link} from "react-router-dom";
 import { UserContext } from "./App";
 import { useContext } from "react";
@@ -6,26 +6,40 @@ import { useContext } from "react";
 const url = "https://localhost:7022";
 const apiPath = url + "/api/category/";
 const photoPath = url + "/img/content/";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'loadCategories': {
+      return {
+        ...state,
+        categories: action.payload
+      };
+    }
+  }
+}
+
 function Home() {
-  let [ctg, setCtg] = useState([]);
-  
+  //let [ctg, setCtg] = useState([]);
+  let [state, dispatch] = useReducer(reducer, { categories: [] });
+
   const {user, setUser} = useContext(UserContext);
 
   useEffect(()=>{
-    if(ctg.length === 0){
+    console.log(state);
+    if(state.categories.length === 0){
       loadCategories();
     }
   });
   const loadCategories = useCallback(() => {
     fetch(apiPath)
       .then(r=>r.json())
-      .then(j=>setCtg(j));
+      .then(j=>dispatch({ type: 'loadCategories', payload: j }));
   });
   return (
     <div className="Home">
       <h1>Home</h1>
       <div className="row row-cols-1 row-cols-md-2 g-4">
-        {ctg.map(c => <CategoryCard category={c} key={c.id} />)}
+        {state.categories.map(c => <CategoryCard category={c} key={c.id} />)}
       </div>
       {user != null && user.role == "Admin" && <AdminCategoryForm reloadCategories={loadCategories} />}
     </div>

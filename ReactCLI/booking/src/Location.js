@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState, useReducer } from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { UserContext } from './App';
@@ -9,28 +9,38 @@ const locIdPath = url + "/api/location";
 const photoPath = url + "/img/content/";
 const formPath = url + "/api/room";
 
+function reducer(state, action) {
+  switch(action.type) {
+    case 'setLocId': return {...state, locId: action.payload.id};
+    case 'setRooms': return {...state, rooms: action.payload};
+  }
+  throw `redicer: action type '${action.type}' unrecognized`;
+}
+
 export default function Location() {
   const { slug } = useParams();
   const { user } = useContext(UserContext);
-  let [rooms, setRooms] = useState([]);
-  let [locId, setLocId] = useState("");
+  const [state, dispatch] = useReducer(reducer, {rooms: [], locId: ""});
+  //let [rooms, setRooms] = useState([]);
+  //let [locId, setLocId] = useState("");
   useEffect(() => {
     loadRooms();
-    fetch(`${locIdPath}?slug=${slug}`, {method: 'PATCH'}).then(r => r.json()).then(j => setLocId(j.id));
+    fetch(`${locIdPath}?slug=${slug}`, {method: 'PATCH'})
+      .then(r => r.json()).then(j => dispatch({type: 'setLocId', payload: j}));
   }, [slug]);
 
   const loadRooms = useCallback(() => {
     const _url = apiPath + slug;
     //console.log(_url);
-    fetch(_url).then(r => r.json()).then(setRooms);
+    fetch(_url).then(r => r.json()).then(j => dispatch({type: 'setRooms', payload: j}));
   });
 
   return <>
     <h1>Location: {slug}</h1>
     <div className="row row-cols-1 row-cols-md-2 g-4">
-        {rooms.map(r => <RoomCard room={r} key={r.id} />)}
+        {state.rooms.map(r => <RoomCard room={r} key={r.id} />)}
     </div>
-    { user != null && user.role == "Admin" && <AdminLocation locationId={locId} loadRooms={loadRooms} /> }
+    { user != null && user.role == "Admin" && <AdminLocation locationId={state.locId} loadRooms={loadRooms} /> }
   </>;
 }
 
