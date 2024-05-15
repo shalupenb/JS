@@ -50,3 +50,6 @@ footer{
 .room-image {
   width: 90%;
 }
+.card-deleted {
+  opacity: .4;
+}

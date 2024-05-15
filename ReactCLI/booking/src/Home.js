@@ -22,7 +22,7 @@ function Home() {
   //let [ctg, setCtg] = useState([]);
   let [state, dispatch] = useReducer(reducer, { categories: [] });
 
-  const {user, setUser} = useContext(UserContext);
+  const {user, token} = useContext(UserContext);
 
   useEffect(()=>{
     console.log(state);
@@ -31,7 +31,9 @@ function Home() {
     }
   });
   const loadCategories = useCallback(() => {
-    fetch(apiPath)
+    fetch(apiPath, {
+      headers: (token ? {'Authorization' : `Bearer ${token.id}`} : {})
+    })
       .then(r=>r.json())
       .then(j=>dispatch({ type: 'loadCategories', payload: j }));
   });
@@ -58,7 +60,7 @@ function AdminCategoryForm(props) {
         body: formData
     }).then(r => {
         console.log(r);
-        if (r.status == 201) {
+        if (r.status === 201) {
             props.reloadCategories();
         }
         else {
@@ -122,17 +124,46 @@ function AdminCategoryForm(props) {
 }
 
 function CategoryCard(props) {
+  const {user} = useContext(UserContext);
   return (<div className="col">
-  <div className="card  h-100">
-      <Link to={"category/" + props.category.slug}>
-          <img src={photoPath + (props.category.photoUrl ?? "no-image.jpg")} className="card-img-top" alt="category" />
-          <div className="card-body">
-              <h5 className="card-title">{props.category.name}</h5>
-              <p className="card-text">{props.category.description}</p>
+    <div className={"card  h-100 " + (props.category.deleteDt ? "card-deleted" : "")}>
+        <Link to={"category/" + props.category.slug}>
+            <img src={photoPath + (props.category.photoUrl ?? "no-image.jpg")} className="card-img-top" alt="category" />
+            <div className="card-body">
+              { !!props.category.deleteDt &&
+                <i>Видалено {props.category.deleteDt}</i>
+              }
+                <h5 className="card-title">{props.category.name}</h5>
+                <p className="card-text">{props.category.description}</p>
+            </div>
+        </Link>
+        {user != null && user.role === "Admin" &&
+          <div className="cord-footer">
+            { !!props.category.deleteDt &&
+              <button className="btn btn-outline-success"
+                  data-type="restore-category"
+                  data-category-id="@(Model.Id)">
+                Restore
+              </button>
+            }
+            { !props.category.deleteDt &&
+              <button className="btn btn-outline-danger"
+                  data-type="delete-category"
+                  data-category-id="@(Model.Id)">
+                Del
+              </button>
+            }
+            <button className="btn btn-outline-warning"
+                data-type="edit-category"
+                data-category-name="@(Model.Name)"
+                data-category-description="@(Model.Description)"
+                data-category-slug="@(Model.Slug)"
+                data-category-id="@(Model.Id)"
+            >Edit</button>
           </div>
-      </Link>
-  </div>
-</div>);
+        }
+    </div>
+  </div>);
 }
 
 
