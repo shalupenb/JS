@@ -4,7 +4,7 @@ import { UserContext } from "./App";
 import { useContext } from "react";
 
 const url = "https://localhost:7022";
-const apiPath = url + "/api/category/";
+const apiPath = url + "/api/category";
 const photoPath = url + "/img/content/";
 
 function reducer(state, action) {
@@ -15,6 +15,16 @@ function reducer(state, action) {
         categories: action.payload
       };
     }
+    case 'deleteCategory': {
+        let newState = {...state};
+        newState.categories.find(c => c.id === action.payload).deleteDt = new Date().toDateString();
+        return newState;
+    }
+    case 'restoreCategory': {
+      let newState = {...state};
+      newState.categories.find(c => c.id === action.payload).deleteDt = null;
+      return newState;
+  }
   }
 }
 
@@ -37,13 +47,16 @@ function Home() {
       .then(r=>r.json())
       .then(j=>dispatch({ type: 'loadCategories', payload: j }));
   });
+  const editCardClick = useCallback((category) => {
+    console.log(category);
+  });
   return (
     <div className="Home">
       <h1>Home</h1>
       <div className="row row-cols-1 row-cols-md-2 g-4">
-        {state.categories.map(c => <CategoryCard category={c} key={c.id} />)}
+        {state.categories.map(c => <CategoryCard category={c} key={c.id} dispatch={dispatch} editCardClick={editCardClick}/>)}
       </div>
-      {user != null && user.role == "Admin" && <AdminCategoryForm reloadCategories={loadCategories} />}
+      {user != null && user.role === "Admin" && <AdminCategoryForm reloadCategories={loadCategories} />}
     </div>
   );
 }
@@ -124,7 +137,40 @@ function AdminCategoryForm(props) {
 }
 
 function CategoryCard(props) {
-  const {user} = useContext(UserContext);
+  const {user, token} = useContext(UserContext);
+  const delClick = useCallback(() => {
+    if (window.confirm("Ви підтверджуєте видалення категорії?")) {
+      fetch(`${apiPath}/${props.category.id}`, { 
+        method: 'DELETE',
+        headers: (token ? {'Authorization' : `Bearer ${token.id}`} : {}) 
+      }).then(r => {
+          if (r.status < 400) {
+              props.dispatch({type: 'deleteCategory', payload: props.category.id});
+          }
+          else {
+              alert("Виникла помилка видлаення");
+          }
+      })
+  }
+  });
+  const restoreClick = useCallback(() => {
+    if (window.confirm("Ви підтверджуєте відновлення категорії?")) {
+      fetch(`${apiPath}?id=${props.category.id}`, { 
+        method: 'RESTORE',
+        headers: (token ? {'Authorization' : `Bearer ${token.id}`} : {}) 
+      }).then(r => {
+          if (r.status < 400) {
+              props.dispatch({type: 'restoreCategory', payload: props.category.id});
+          }
+          else {
+              alert("Виникла помилка відновлення");
+          }
+      })
+  }
+  });
+  const editClick = useCallback(() => {
+    props.editCardClick(props.category);
+  });
   return (<div className="col">
     <div className={"card  h-100 " + (props.category.deleteDt ? "card-deleted" : "")}>
         <Link to={"category/" + props.category.slug}>
@@ -141,24 +187,18 @@ function CategoryCard(props) {
           <div className="cord-footer">
             { !!props.category.deleteDt &&
               <button className="btn btn-outline-success"
-                  data-type="restore-category"
-                  data-category-id="@(Model.Id)">
+                onClick={restoreClick}>
                 Restore
               </button>
             }
             { !props.category.deleteDt &&
               <button className="btn btn-outline-danger"
-                  data-type="delete-category"
-                  data-category-id="@(Model.Id)">
+                  onClick={delClick}>
                 Del
               </button>
             }
             <button className="btn btn-outline-warning"
-                data-type="edit-category"
-                data-category-name="@(Model.Name)"
-                data-category-description="@(Model.Description)"
-                data-category-slug="@(Model.Slug)"
-                data-category-id="@(Model.Id)"
+                onClick={editClick}
             >Edit</button>
           </div>
         }
