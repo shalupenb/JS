@@ -18,10 +18,19 @@ function App() {
   /*Те, що знаходиться у провайдері контексту (<UserContext.Provider...) є підписниками на його зміни. Відповідно, будь-який елемент в середині иіла контексту може викликати set-тер і всі інші елементи одержать це повідомлення.*/
   useEffect(() => {
     //console.log('App Effect');
-    const t = window.localStorage.getItem('token');
-    if(t) {
-      setToken(JSON.parse(t));
-    }
+    const tokenKey = 'token';
+    const t = window.localStorage.getItem(tokenKey);
+    if (t) {
+      const token = JSON.parse(t);
+      const currentTime = new Date().getTime();
+      const expireTime = new Date(token.expiresDt).getTime();
+      if (currentTime > expireTime) {
+          alert('Сесія завершена, необхідно оновлення');
+          window.localStorage.removeItem(tokenKey);
+      } else {
+          setToken(token);
+      }
+  }
     const u = window.localStorage.getItem('user');
     if(u) {
       setUser(JSON.parse(u));

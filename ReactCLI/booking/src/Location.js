@@ -52,6 +52,8 @@ function RoomCard(props) {
         <div className="card-body">
           <h5 className="card-title">{props.room.name}</h5>
           <p className="card-text">{props.room.description}</p>
+          <p className="card-text">Зірок - {props.room.stars}</p>
+          <p className="card-text">Вартість: {props.room.dailyPrice}</p>
         </div>
       </Link>
     </div>

@@ -171,13 +171,24 @@ function CategoryCard(props) {
   const editClick = useCallback(() => {
     props.editCardClick(props.category);
   });
+  const deleteDtStr = props.category.deleteDt;
+  const deleteDt = new Date(deleteDtStr);
+
+  const readableDeleteDt = deleteDt.toLocaleString('ru-RU', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
   return (<div className="col">
     <div className={"card  h-100 " + (props.category.deleteDt ? "card-deleted" : "")}>
         <Link to={"category/" + props.category.slug}>
             <img src={photoPath + (props.category.photoUrl ?? "no-image.jpg")} className="card-img-top" alt="category" />
             <div className="card-body">
               { !!props.category.deleteDt &&
-                <i>Видалено {props.category.deleteDt}</i>
+                <i>Видалено {readableDeleteDt}</i>
               }
                 <h5 className="card-title">{props.category.name}</h5>
                 <p className="card-text">{props.category.description}</p>

@@ -19,6 +19,16 @@ document.addEventListener('DOMContentLoaded', () =>{
     throw "Element #change-light-button not found";
   }
   changeLightButton.addEventListener('click', cnahgeLights);
+  const changeLightButton1 = document.getElementById("change-light-button1"); 
+  if(!changeLightButton1){
+    throw "Element #change-light-button not found";
+  }
+  changeLightButton1.addEventListener('click', cnahgeLights1);
+  const changeLightButton2 = document.getElementById("change-light-button2"); 
+  if(!changeLightButton2){
+    throw "Element #change-light-button not found";
+  }
+  changeLightButton2.addEventListener('click', cnahgeLights2);
 });
 function validateInput() {
   const usernameInput = document.getElementById("username");
@@ -37,6 +47,50 @@ function cnahgeLights() {
   const redLight = document.getElementById("red-light");
   const yellowLight = document.getElementById("yellow-light");
   const greenLight = document.getElementById("green-light");
+  switch (currentLight) {
+    case "red":
+        redLight.style.backgroundColor = "gray";
+        yellowLight.style.backgroundColor = "yellow";
+        currentLight = "yellow";
+        break;
+    case "yellow":
+        yellowLight.style.backgroundColor = "gray";
+        greenLight.style.backgroundColor = "green";
+        currentLight = "green";
+        break;
+    case "green":
+        greenLight.style.backgroundColor = "gray";
+        redLight.style.backgroundColor = "red";
+        currentLight = "red";
+        break;
+  } 
+}
+function cnahgeLights1() {
+  const redLight = document.getElementById("red-light1");
+  const yellowLight = document.getElementById("yellow-light1");
+  const greenLight = document.getElementById("green-light1");
+  switch (currentLight) {
+    case "red":
+        redLight.style.backgroundColor = "gray";
+        yellowLight.style.backgroundColor = "yellow";
+        currentLight = "yellow";
+        break;
+    case "yellow":
+        yellowLight.style.backgroundColor = "gray";
+        greenLight.style.backgroundColor = "green";
+        currentLight = "green";
+        break;
+    case "green":
+        greenLight.style.backgroundColor = "gray";
+        redLight.style.backgroundColor = "red";
+        currentLight = "red";
+        break;
+  } 
+}
+function cnahgeLights2() {
+  const redLight = document.getElementById("red-light2");
+  const yellowLight = document.getElementById("yellow-light2");
+  const greenLight = document.getElementById("green-light2");
   switch (currentLight) {
     case "red":
         redLight.style.backgroundColor = "gray";
